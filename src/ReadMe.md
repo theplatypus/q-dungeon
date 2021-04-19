@@ -184,9 +184,9 @@ In particular, the 3*3 dungeons are quite well solved.
 
 Some 4*4 show convincing efficacity as well, besides the fact they are more sensitive to hyperparameters, and can end up not playing much better than random. Anyway, some models show certain ability to learn, even in the random variant.
 
-![4*4_model](../save/agents/selected/4_4/learning.png "4*4 dungeon Solver")
+![4*4_model](../save/save/plots/learning_curve_dim=[4*4]level=[2]epochs=[500]replay=[2048*512]gamma=[0,9]eps=[1,0*0,25].png "4*4 dungeon Solver")
 
-The selected model performs a success rate of 76.2% on a batch of 500 random dungeons, with an epsilon kept to `0.1` (10% of moves are random). See the `test.py` script.
+The 4x4 agent saved in `save/agent/selected/4_4/` performs a success rate of 76.2% on a batch of 500 random dungeons, with an epsilon kept to `0.1` (10% of moves are random). See the `test.py` script.
 
 |                   | Success         | Average Moves |
 |-------------------|-----------------|---------------|
