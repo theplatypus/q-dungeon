@@ -1,10 +1,28 @@
 
 # Dungeon generator by Q-learning 
 
-Summary
+1. [Problem size](#problem)
+	1. [Edge States](#edges)
+	2. [Keypoint States](#keypoints)
+	3. [Dungeon States](#dungeon-states)
+	4. [State Encoding](#encoding)
+2. [Artificial Intelligence](#ai)
+	1. [Objective](#objective)
+	2. [Rewards /Actions](#rewards-actions)
+		1. [Agent Actions](#actions)
+		2. [Rewards](#rewards)
+	3. [Architecture](#architecture)
+	4. [Hyperparameters tweaking](#tweaking)
+	5. [Results](#results)
+3. [Software Architecture](#software)
+	1. [Dungeon](#software-dungeon)
+	2. [Environment](#software-env)
+	3. [Agent](#software-agent)
+	4. [Usage](#usage)
+		1. [Train](#train)
+		2. [Test](#test)
 
-
-## Problem size and complexity
+## Problem size and complexity <a name="problem"></a>
 
 The problem is related with combinatory associations, and can be estimated as follows.
 
@@ -23,7 +41,7 @@ Each room is connected with its direct neighbors, thus forming a graph known as 
 `edges_number` = 2*(`cols`*`rows`) - `cols` - `rows`
 ```
 
-### Edges States
+### Edge States <a name="edges"></a>
 
 In the case of `cols=4` and `rows=4`, we have `24` edges. Each edge takes one state among two possibles states (`closed`/`open`).
 
@@ -33,7 +51,7 @@ In the case of `cols=4` and `rows=4`, we have `24` edges. Each edge takes one st
 
 In the case of `4*4-maze`, `1'6777'216` edges configurations are possible.
 
-### Keypoints States
+### Keypoints States <a name="keypoints"></a>
 
 There are 3 keypoints in the maze, placed in 3 distincts rooms. 
 
@@ -47,7 +65,7 @@ To lower the number of states, we consider them equivalent. The number of differ
 
 In the case of `4*4-maze`, `560` keypoints configurations are possible.
 
-### Mazes States
+### Dungeon States <a name="dungeon-states"></a>
 
 The combination of `keypoints_states` and `edges_states` grows **extremely** fast towards and `rows` and `cols`.
 
@@ -59,7 +77,7 @@ Of course, the vast majority of those `9'395'240'960` states are not valid mazes
 
 Moreover, by finding an rotation/symmetry invariant way to represent those spaces, we could divide by `8` this number, but it would not change the next steps. 
 
-### State Encoding
+### State Encoding <a name="encoding"></a>
 
 We invite the reader interested in a maze's state encoding to read the documentation of `src/dungeon/dungeon.py` from `l.135` to `l.192`, especially the function `get_state_vector`.
 
@@ -71,9 +89,9 @@ Basically, we encode as state vector the concatenation of :
 
 For the `4*4` problem, we obtain a binary-valued vector of dim `56`.
 
-## AI 
+## AI <a name="ai"></a>
 
-### Objective
+### Objective <a name="objective"></a>
 
 We want to build an AI to generate some dungeons which are : 
 
@@ -87,7 +105,7 @@ An agent trained with this method can still keep a minimal ratio of random actio
 
 However, we can not fully rely on randomness, because the method would not scale to larger dungeons, as the ratio of valid/possible dungeons decreases very fast, hence the need of this AI.
 
-### Rewards / Actions
+### Rewards / Actions <a name="rewards-actions"></a>
 
 Besides the ratio of random actions (characterized by `epsilon` value), it is nonetheless important to induce some variability in the way the agent will interact with the environment. 
 
@@ -98,7 +116,7 @@ To avoid the AI to learn to generate "only the best 4*4 possible maze", and to k
 - two actions can be performed by `current_room`
 - the board is entirely iterated two times maximum (to avoid infinite games and focus the learning)
 
-#### Actions 
+#### Actions <a name="actions"></a>
 
 Actions are kept to only 3, thanks to the `current_room` added to the state. Having each wall "playable" at any time would be unconvenient to learn, as it would lead to a lot of divergence in the very early states
 	
@@ -106,7 +124,7 @@ Actions are kept to only 3, thanks to the `current_room` added to the state. Hav
 - `TOGGLE_WALL_RIGHT` ; toggle right wall state
 - `NOP` : do nothing
 
-#### Rewards
+#### Rewards <a name="rewards"></a>
 
 At each turn, the action chosen by agent yields a reward. 
 
@@ -125,7 +143,7 @@ We keep a record of the previous values for those features ; the reward is given
 
 Finally, if the agent goes through the dungeon two times without resolving it, a reward of `-50` is applied, which is the same magnitude of a "good resolution".
 
-### Architecture used
+### Architecture used <a name="architecture"></a>
 
 In regular Q-Learning, we update a `state*action` table. Even with a reduced action space of 3 dimensions, the number of possible states is too large (at least for `4*4 mazes`) to be stored in a table. 
 
@@ -135,7 +153,7 @@ Instead, I chose to use the Deep Q-Network method, replacing the Q-Table by a mo
 
 With Deep Q-Network, the scaling for the `5*5` problem would be done by increasing the input layer to match dungeon's state vector, and probably re-adjust some hyperparameters, not a huge deal compared with the size increasing of a regular Q-Table.
 
-### Hyperparameters tweaking
+### Hyperparameters tweaking <a name="tweaking"></a>
 
 The indicator to monitor is the success rate or the number of moves needed by AI to finish the game towards epsilon ; as epsilon decreases over games played (epochs), two typical phenomenons are likely to happen :
 
@@ -156,7 +174,7 @@ If by decreasing epsilon, and thus relying more on learnt situations, this abili
 
 If tweaking those parameters does not change anything in the AI training success, it may indicate the way rewards are granted is the actual problem ; progressive rewards are usually a better way to process.
 
-### Results
+### Results  <a name="results"></a>
 
 Models have been trained from simplest (3x3, fixed) to hardest (4x4, random) problems to validate rewards strategy before going for long trainings. 
 
@@ -176,7 +194,7 @@ The selected model performs a success rate of 76.2% on a batch of 500 random dun
 | Random Agent      | 289/500 (57.8%) | 35.61         |
 
 
-#### Next steps 
+#### Next steps <a name="next-steps"></a>
 
 The following adaptations could lead to better results. They are ordered by necessary workload :
 
@@ -185,9 +203,9 @@ The following adaptations could lead to better results. They are ordered by nece
  - Test other rewards methods ; at the moment, the AI removes too many walls
  - use Double Deep Q Network architecture [https://arxiv.org/abs/1509.06461](DDQN), which seems more efficient in learning phase
 
-## Software Architecture
+## Software Architecture <a name="software"></a>
 
-### Dungeon 
+### Dungeon <a name="software-dungeon"></a>
 
 This class implements the model besides the environment, the dungeon/maze itself. See the code for further details, but methods are separated in sections : 
 
@@ -287,7 +305,7 @@ print("\nDifficulty estimation")
 print(dungeon.compute_difficulty())
 ```
 
-### Environment 
+### Environment <a name="software-env"></a>
 
 This class acts as a wrapper for a `Dungeon`, and implements rewards/actions mechanisms available to agents, which would be outside the dungeon's scope.
 
@@ -299,13 +317,13 @@ It consists in creating a dungeon with all waalls closed, and populates it with 
 
 It also implements rewards describded above.
 
-### Agent 
+### Agent <a name="software-agent"></a>
 
 The AI we develop is contained in a Agent, which interacts with the above environment, and adapts its strategy/policy according to the rewards he receives while training
 
-### Usage
+### Usage <a name="usage"></a>
 
-#### Train
+#### Train <a name="train"></a>
 
 The script `train.py` trains an agent how to resolve a particular problem, given some parameters 
 
@@ -321,7 +339,7 @@ The script `train.py` trains an agent how to resolve a particular problem, given
 
 By default, running this script will train an AI to resolve 4*4 random mazes.
 
-#### Test 
+#### Test <a name="test"></a>
 
 The script `test.py` loads a previously trained agent and lets it play a new game, printing all its move choices, and the result obtained, with the number of actions needed.
 
