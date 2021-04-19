@@ -64,9 +64,10 @@ Moreover, by finding an rotation/symmetry invariant way to represent those space
 We invite the reader interested in a maze's state encoding to read the documentation of `src/dungeon/dungeon.py` from `l.135` to `l.192`, especially the function `get_state_vector`.
 
 Basically, we encode as state vector the concatenation of :
-	- a one-hot encoding of dims (`rooms_number`, 1) to indicate the `current_room` (see AI/Objectives)
-	- a "three-hot" encoding (`rooms_number`, 1) to indicated where the keypoints are placed
-	- a vector of dims (`edges_number`, 1) to indicated each edge state
+
+- a one-hot encoding of dims (`rooms_number`, 1) to indicate the `current_room` (see AI/Objectives)
+- a "three-hot" encoding (`rooms_number`, 1) to indicated where the keypoints are placed
+- a vector of dims (`edges_number`, 1) to indicated each edge state
 
 For the `4*4` problem, we obtain a binary-valued vector of dim `56`.
 
@@ -76,9 +77,9 @@ For the `4*4` problem, we obtain a binary-valued vector of dim `56`.
 
 We want to build an AI to generate some dungeons which are : 
 
-	- valid (important)
-	- obtained quickly (that's why we do not rely on fully-random or exhaustive enumeration)
-	- the most challenging/complicated possible (preferrably) 
+- valid (important)
+- obtained quickly (that's why we do not rely on fully-random or exhaustive enumeration)
+- the most challenging/complicated possible (preferrably) 
 
 Moreover, we want this AI to rely on Q-Learning concept, a method of reinforcment learning that can be quickly resumed as follows : discover randomly the set of environment states, and evaluates the reward obtained by an action. This reward is adjusted to a Q-Value, taking into account the actual reward received for the action, but the potential future rewards known from futures states. The idea is to play random actions less and less as the Q values estimations become more accurate.
 
@@ -92,18 +93,18 @@ Besides the ratio of random actions (characterized by `epsilon` value), it is no
 
 To avoid the AI to learn to generate "only the best 4*4 possible maze", and to keep the action space small, we define the following set of rules to fulfill the objective :
 
-	- a dungeon is initialized with random keypoints (eventuallly a few random opened walls) to induce variability
-	- the dungeon is iterated over rooms, so each action is centered on a `current_room`
-	- two actions can be performed by `current_room`
-	- the board is entirely iterated two times maximum (to avoid infinite games and focus the learning)
+- a dungeon is initialized with random keypoints (eventuallly a few random opened walls) to induce variability
+- the dungeon is iterated over rooms, so each action is centered on a `current_room`
+- two actions can be performed by `current_room`
+- the board is entirely iterated two times maximum (to avoid infinite games and focus the learning)
 
 #### Actions 
 
 Actions are kept to only 3, thanks to the `current_room` added to the state. Having each wall "playable" at any time would be unconvenient to learn, as it would lead to a lot of divergence in the very early states
 	
-	- `TOGGLE_WALL_DOWN` ; toggle bottom wall state
-	- `TOGGLE_WALL_RIGHT` ; toggle right wall state
-	- `NOP` : do nothing
+- `TOGGLE_WALL_DOWN` ; toggle bottom wall state
+- `TOGGLE_WALL_RIGHT` ; toggle right wall state
+- `NOP` : do nothing
 
 #### Rewards
 
@@ -115,10 +116,10 @@ If the agent chooses an illegal move (toggle right wall in last column), an addi
 
 With a few tests, it seems very important to solve this problem by reinforcment to provide progressive and regular rewards. While there is not an explicit formula to know if the agent is really progressing (especialy in the general case), some caracteristics of the underlying graph can help : 
 
-	- `difficulty` the sum of shortest paths length between keypoints (if they exist)
-	- `closeness` the sum of number of rooms accessible to keypoints
-	- `compounds` the number of connected compounds in the graph
-	- `max_compounds` the size of the biggest connected compound
+- `difficulty` the sum of shortest paths length between keypoints (if they exist)
+- `closeness` the sum of number of rooms accessible to keypoints
+- `compounds` the number of connected compounds in the graph
+- `max_compounds` the size of the biggest connected compound
 
 We keep a record of the previous values for those features ; the reward is given accordingly with the variation (positive or negative) of those values.
 
@@ -138,8 +139,8 @@ With Deep Q-Network, the scaling for the `5*5` problem would be done by increasi
 
 The indicator to monitor is the success rate or the number of moves needed by AI to finish the game towards epsilon ; as epsilon decreases over games played (epochs), two typical phenomenons are likely to happen :
 
-	- the success rate follows epsilon
-	- the number of moves follows epsilon
+- the success rate follows epsilon
+- the number of moves follows epsilon
 
 Success rates and number of moves are obviously related, and picture in their way how well the AI understood rules and plays efficiently.
 
@@ -147,11 +148,11 @@ Success rates and number of moves are obviously related, and picture in their wa
 
 If by decreasing epsilon, and thus relying more on learnt situations, this ability decreases, then it shows the learning process has not been successful. Grossly speaking, the AI has likely been released in the wild "too soon" or "too late", so we should adjust :
 
-	- learning rate
-	- Q-network model architecture 
-	- batch size used for replay
-	- epsilon decreasing / epsilon min value
-	- discount rate (how longer-term rewards are valued towards short-term ones)
+- learning rate
+- Q-network model architecture 
+- batch size used for replay
+- epsilon decreasing / epsilon min value
+- discount rate (how longer-term rewards are valued towards short-term ones)
 
 If tweaking those parameters does not change anything in the AI training success, it may indicate the way rewards are granted is the actual problem ; progressive rewards are usually a better way to process.
 
@@ -190,13 +191,13 @@ The following adaptations could lead to better results. They are ordered by nece
 
 This class implements the model besides the environment, the dungeon/maze itself. See the code for further details, but methods are separated in sections : 
 
-	- construction of data struct 
-		- edges/rooms dict
-		- adjacency list updated at each edition
-	- model edition functions (room/walls)
-	- encoding related functions
-	- graphs features related functions useful to compute rewards
-	- random based editions
+- construction of data struct 
+	- edges/rooms dict
+	- adjacency list updated at each edition
+- model edition functions (room/walls)
+- encoding related functions
+- graphs features related functions useful to compute rewards
+- random based editions
 
 To have an overview of class usage, see `test()` function.
 
@@ -292,9 +293,9 @@ This class acts as a wrapper for a `Dungeon`, and implements rewards/actions mec
 
 It consists in creating a dungeon with all waalls closed, and populates it with keypoints following three levels of difficulty :
 
-	- `1`, rooms are fixed in `1`, `7`, `9`
-	- `2`, rooms are placed randomly
-	- `3`, rooms are placed randomly, and a few walls are open
+- `1`, rooms are fixed in `1`, `7`, `9`
+- `2`, rooms are placed randomly
+- `3`, rooms are placed randomly, and a few walls are open
 
 It also implements rewards describded above.
 
@@ -308,15 +309,15 @@ The AI we develop is contained in a Agent, which interacts with the above enviro
 
 The script `train.py` trains an agent how to resolve a particular problem, given some parameters 
 
-	- Game related parameters
-		- `ROWS`, `COLS`
-		- `LEVEL`
-	- Learning related parameters
-		- `LEARNING_RATE`
-		- `EPOCHS`
-		- `MEMORY_SIZE`, `BATCH_SIZE`
-		- `GAMMA`
-		- `EPSILON`, `EPSILON_MIN`
+- Game related parameters
+	- `ROWS`, `COLS`
+	- `LEVEL`
+- Learning related parameters
+	- `LEARNING_RATE`
+	- `EPOCHS`
+	- `MEMORY_SIZE`, `BATCH_SIZE`
+	- `GAMMA`
+	- `EPSILON`, `EPSILON_MIN`
 
 By default, running this script will train an AI to resolve 4*4 random mazes.
 
