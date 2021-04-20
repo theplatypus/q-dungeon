@@ -178,20 +178,20 @@ If tweaking those parameters does not change anything in the AI training success
 
 Models have been trained from simplest (3x3, fixed) to hardest (4x4, random) problems to validate rewards strategy before going for long trainings. 
 
-In particular, the 3*3 dungeons are quite well solved.
+In particular, the 3*3 dungeons are quite well solved. Below the  variation of average rewards/actions, towards periods of 10 epochs.
 
 ![3*3_model](../save/agents/selected/3_3/learning.png "3*3 dungeon Solver")
 
 Some 4*4 show convincing efficacity as well, besides the fact they are more sensitive to hyperparameters, and can end up not playing much better than random. Anyway, some models show certain ability to learn, even in the random variant.
 
-![4*4_model](../save/plots/learning_curve_dim=[4*4]level=[2]epochs=[500]replay=[2048*512]gamma=[0,9]eps=[1,0*0,25].png "4*4 dungeon Solver")
+![4*4_model](../save/agents/selected/4_4/1000_256_1e-3.png "4*4 dungeon Solver")
 
-The 4x4 agent saved in `save/agent/selected/4_4/` performs a success rate of 76.2% on a batch of 500 random dungeons, with an epsilon kept to `0.1` (10% of moves are random). See the `test.py` script.
+The 4x4 agent saved in `save/agents/selected/4_4/DIM44LVL2_LR(0.001,)_E1000_REPLAY2048-256_G0.99_E1.0-0.1.h5` performs a success rate of 84.6% on a batch of 500 random dungeons, with an epsilon kept to `0.1` (10% of moves are random). See the `test.py` script.
 
-|                   | Success         | Average Moves |
-|-------------------|-----------------|---------------|
-| DQN Agent eps=0.1 | 381/500 (76.2%) | 24.64         |
-| Random Agent      | 289/500 (57.8%) | 35.61         |
+|                                                          |     Success     | Average Moves |
+|----------------------------------------------------------|:---------------:|:-------------:|
+| Random Agent                                             | 289/500 (57.8%) | 35.61         |
+| DQN Agent<br>eps=0.1<br>lr=1e-3,g=0.99<br>batch_size=256 | 423/500 (84.6%) | 24.28         |
 
 
 #### Next steps <a name="next-steps"></a>
