@@ -13,9 +13,9 @@ A detailed Readme.md can be found in this folder.
 
 Some useful files generated during the execution of programs : 
 
-	- `agents` contains some saved agents, to avoid further training
-	- `mazes` contains "libraries" of mazes generated during learning
-	- `plots` contains learning curves
+- `agents` contains some saved agents, to avoid further training
+- `mazes` contains "libraries" of mazes generated during learning
+- `plots` contains learning curves
 
 ## Running the code
 
@@ -30,7 +30,7 @@ cd q-dungeon
 The project is accessible through two endpoints (scripts) :
 
  - `train.py` : trains an agent to solve dungeons
- - `train.py` : test an agent trained on its ability to solve new dungeons
+ - `test.py` : test an agent trained on its ability to solve new dungeons
 
 #### Pythonic way
 
