@@ -180,7 +180,8 @@ Models have been trained from simplest (3x3, fixed) to hardest (4x4, random) pro
 
 In particular, the 3*3 dungeons are quite well solved. Below the  variation of average rewards/actions, towards periods of 10 epochs.
 
-![3*3_model](../save/agents/selected/3_3/learning.png "3*3 dungeon Solver")
+![3*3_model](../save/plots/[3*3-random][lr=0,01][gamma=0,8][batch=128].png "3*3 dungeon Solver")
+
 
 Some 4*4 show convincing efficacity as well, besides the fact they are more sensitive to hyperparameters, and can end up not playing much better than random. Anyway, some models show certain ability to learn, even in the random variant.
 
