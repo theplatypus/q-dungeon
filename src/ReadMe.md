@@ -186,12 +186,12 @@ Some 4*4 show convincing efficacity as well, besides the fact they are more sens
 
 ![4*4_model](../save/agents/selected/4_4/1000_256_1e-3.png "4*4 dungeon Solver")
 
-The 4x4 agent saved in `save/agents/selected/4_4/DIM44LVL2_LR(0.001,)_E1000_REPLAY2048-256_G0.99_E1.0-0.1.h5` performs a success rate of 84.6% on a batch of 500 random dungeons, with an epsilon kept to `0.1` (10% of moves are random). See the `test.py` script.
+The 4x4 agent saved in `save/agents/selected/4_4/DIM44LVL2_LR(0.001,)_E1000_REPLAY2048-256_G0.99_E1.0-0.1.h5` `lr=1e-3,g=0.99<br>batch_size=256` performs a success rate of 84.6% on a batch of 500 random dungeons, with an epsilon kept to `0.1` (10% of moves are random). See the `test.py` script.
 
-|                                                          |     Success     | Average Moves |
-|----------------------------------------------------------|:---------------:|:-------------:|
-| Random Agent                                             | 289/500 (57.8%) | 35.61         |
-| DQN Agent<br>eps=0.1<br>lr=1e-3,g=0.99<br>batch_size=256 | 423/500 (84.6%) | 24.28         |
+|                      |     Success     | Average Moves |
+|----------------------|:---------------:|:-------------:|
+| Random Agent         | 289/500 (57.8%) | 35.61         |
+| DQN Agent<br>eps=0.1 | 423/500 (84.6%) | 24.28         |
 
 
 #### Next steps <a name="next-steps"></a>
