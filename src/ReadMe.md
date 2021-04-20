@@ -201,7 +201,7 @@ The following adaptations could lead to better results. They are ordered by nece
  - Use a learning rate scheduler
  - Use a batch_size scheduler
  - Test other rewards methods ; at the moment, the AI removes too many walls
- - use Double Deep Q Network architecture [https://arxiv.org/abs/1509.06461](DDQN), which seems more efficient in learning phase
+ - use Double Deep Q Network architecture [DDQN](https://arxiv.org/abs/1509.06461), which seems more efficient in learning phase
 
 ## Software Architecture <a name="software"></a>
 
