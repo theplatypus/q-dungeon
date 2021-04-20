@@ -1,6 +1,33 @@
 
 # Dungeon generator by Q-learning 
 
+Little example of a Q-Learning based Agent to generate schemes of simple dungeons of rectangular shape containing three distinct keypoints :
+
+ - In (I)
+ - Out (O)
+ - Treasure (*)
+
+A valid dungeon has paths between those three keypoints.
+
+Dungeons are rendered in ascii to keep the requirements minimal :
+
+ - tensorflow/keras
+ - numpy
+ - pandas
+
+```
+Example of dungeon 
+:--:--:--:--:
+|* |        |
+:  :  :  :  :
+|     |  |  |
+:  :--:  :  :
+|I       |  |
+:  :  :  :--:
+|  |  |O |  |
+:--:--:--:--:
+```
+
 ## Repository Structure
 
 ### /src
